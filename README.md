@@ -8,6 +8,7 @@
 ## II.	OHNLP Toolkit Installation Instructions
 
 **NB**: If you already have an active OHNLP toolkit installation, these instructions can be skipped, please proceed directly to section III
+
 **NB**: These steps require an internet connection to download requisite libraries. Once download is complete (through step 6), the entire OHNLPTK folder can be copied to a separate machine if execution in an isolated environment is desired. 
 
 1.	Copy the installation shell script into a linux/unix system from 
