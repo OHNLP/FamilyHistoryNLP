@@ -2,7 +2,7 @@
 
 ## I.	Prerequisites:
 
--	Java 8-14 (11+ preferred)
+-	Java 8-13 (11+ preferred)
 -	An active OHNLP Toolkit Install (OHNLP Backbone + MedTagger). Installation instructions have been included for your convenience
 
 ## II.	OHNLP Toolkit Installation Instructions
