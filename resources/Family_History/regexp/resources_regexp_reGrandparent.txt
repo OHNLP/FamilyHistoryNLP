@@ -1,0 +1,1 @@
+grand(\s*|\-)parent\w{0,2}

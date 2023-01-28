@@ -1,0 +1,1 @@
+great(\s*|\-)grand(\s*|\-)son\w{0,2}

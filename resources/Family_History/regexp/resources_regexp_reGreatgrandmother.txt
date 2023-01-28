@@ -1,0 +1,2 @@
+great(\s*|\-)grand(\s*|\-)mother
+great(\s*|\-)grand(\s*|\-)ma

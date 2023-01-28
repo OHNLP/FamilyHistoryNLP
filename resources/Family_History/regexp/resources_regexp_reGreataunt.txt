@@ -1,0 +1,5 @@
+great(\s*|\-)aunt\w{0,2}
+grand(\s*|\-)father's sister
+grand(\s*|\-)mother's sister
+grand(\s*|\-)pa's sister
+grand(\s*|\-)ma's sister

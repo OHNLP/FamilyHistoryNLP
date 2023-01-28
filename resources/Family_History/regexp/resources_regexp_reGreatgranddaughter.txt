@@ -1,0 +1,1 @@
+great(\s*|\-)grand(\s*|\-)daughter\w{0,2}

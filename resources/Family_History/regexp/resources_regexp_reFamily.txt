@@ -1,0 +1,2 @@
+family history
+\b(relative|relatives)\b

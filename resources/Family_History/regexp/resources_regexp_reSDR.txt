@@ -1,0 +1,3 @@
+second(\s*|\-)degree(\s*|\-)relative\w{0,2}
+maternal sibling\w{0,2}
+paternal sibling\w{0,2}

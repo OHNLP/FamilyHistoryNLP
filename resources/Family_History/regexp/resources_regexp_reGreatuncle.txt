@@ -1,0 +1,5 @@
+great(\s*|\-)uncle\w{0,2}
+grand(\s*|\-)father's brother
+grand(\s*|\-)mother's brother
+grand(\s*|\-)pa's brother
+grand(\s*|\-)ma's brother

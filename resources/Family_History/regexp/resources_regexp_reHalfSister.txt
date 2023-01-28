@@ -1,0 +1,4 @@
+half(\s*|\-)sister\w{0,2}
+sister\w{0,2} by one parent
+(maternal|mat\.) sister
+(paternal|pat\.) sister

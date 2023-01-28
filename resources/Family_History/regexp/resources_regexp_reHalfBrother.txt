@@ -1,0 +1,4 @@
+half(\s*|\-)brother\w{0,2}
+brother\w{0,2} by one parent
+(maternal|mat\.) brother
+(paternal|mat\.) brother
