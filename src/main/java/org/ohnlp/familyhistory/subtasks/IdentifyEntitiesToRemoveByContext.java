@@ -1,4 +1,4 @@
-package org.ohnlp.familyhistory.tasks;
+package org.ohnlp.familyhistory.subtasks;
 
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.DoFn;
@@ -34,6 +34,7 @@ public class IdentifyEntitiesToRemoveByContext extends DoFn<Row, Row> {
                 pc.output(Row.withSchema(SCHEMA).addValues(docID, entity).build());
             }
         }
+        // If any of the three of these are in the sentence then exclude all family members from that sentence
         if (sentence.toLowerCase(Locale.ROOT).contains("husbands") ||
                 sentence.toLowerCase(Locale.ROOT).contains("patients partner") ||
                 sentence.toLowerCase(Locale.ROOT).contains("wifes")) {

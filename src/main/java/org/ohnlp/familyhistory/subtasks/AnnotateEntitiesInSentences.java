@@ -1,4 +1,4 @@
-package org.ohnlp.familyhistory.tasks;
+package org.ohnlp.familyhistory.subtasks;
 
 import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.DoFn;
@@ -9,6 +9,10 @@ import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.Row;
 
+/**
+ * Marks up the input sentences into the annotated_sentence field using extracted entities.
+ * Markup takes the format "matched_text"-"semgroup":"norm_form" (including quotations)
+ */
 public class AnnotateEntitiesInSentences extends PTransform<PCollection<Row>, PCollection<Row>> {
     public static Schema SCHEMA = Schema.of(
             Schema.Field.of("document_id", Schema.FieldType.STRING),

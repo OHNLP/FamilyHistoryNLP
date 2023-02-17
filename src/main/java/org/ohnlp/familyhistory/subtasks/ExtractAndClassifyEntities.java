@@ -1,25 +1,22 @@
-package org.ohnlp.familyhistory.tasks;
+package org.ohnlp.familyhistory.subtasks;
 
-import org.apache.beam.sdk.schemas.Schema;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.values.Row;
+import org.ohnlp.familyhistory.tasks.ExtractEligibleEntities;
 
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Categorizes NLP matches into Observations and FamilyHistory mentions.
+ * <br/>
+ * For observations, stores certainty information into the modifier field. For family members, determines if first or
+ * second degree, extracts relevant entity name from the MedTagger output concept code, and if second degree assigns
+ * maternal/paternal side information to the modifier field.
+ */
 public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
-
-    public static Schema SCHEMA = Schema.of(
-            Schema.Field.of("document_id", Schema.FieldType.STRING),
-            Schema.Field.of("sentence_id", Schema.FieldType.INT32),
-            Schema.Field.of("chunk_id", Schema.FieldType.INT32),
-            Schema.Field.of("entity_type", Schema.FieldType.STRING),
-            Schema.Field.of("concept", Schema.FieldType.STRING),
-            Schema.Field.of("modifier", Schema.FieldType.STRING).withNullable(true),
-            Schema.Field.of("entity_sequence_number", Schema.FieldType.INT32)
-    );
 
     private Pattern EXCLUDED_TEXT_MATCHES;
     private Pattern FIRST_DEGREE_RELATIVES;
@@ -54,7 +51,6 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
             return;
         }
         String sanitizedDocID = row.getString("note_id");
-//        String sanitizedDocID = Objects.requireNonNull(row.getString("note_id")).replaceAll("(?i).txt(?-i)", "");
         if (Objects.requireNonNull(row.getString("concept_code")).toLowerCase(Locale.ROOT).contains("_degree")) {
             String[] split_concept_code = Objects.requireNonNull(row.getString("concept_code")).split("-");
             if (split_concept_code.length < 2) {
@@ -71,8 +67,9 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                 boolean sideFound = false;
                 while (m.find()) {
                     sideFound = true;
-                    String side = m.group(1).toUpperCase();
-                    pc.output(Row.withSchema(SCHEMA).addValues(
+                    String side = m.group(1);
+                    side = side.substring(0, 1).toUpperCase() + side.substring(1);
+                    pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                             sanitizedDocID,
                             row.getInt32("cleaned_sentence_id"),
                             row.getInt32("constituent_chunk_idx"),
@@ -83,7 +80,7 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                     ).build());
                 }
                 if (!sideFound) {
-                    pc.output(Row.withSchema(SCHEMA).addValues(
+                    pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                             sanitizedDocID,
                             row.getInt32("cleaned_sentence_id"),
                             row.getInt32("constituent_chunk_idx"),
@@ -94,7 +91,7 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                     ).build());
                 }
             } else if (this.FIRST_DEGREE_RELATIVES.matcher(rel).find()) { // We do this second in an else because grandparents include equivalent parent word
-                pc.output(Row.withSchema(SCHEMA).addValues(
+                pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                         sanitizedDocID,
                         row.getInt32("cleaned_sentence_id"),
                         row.getInt32("constituent_chunk_idx"),
@@ -105,7 +102,7 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                 ).build());
             }
         } else {
-            pc.output(Row.withSchema(SCHEMA).addValues(
+            pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                     sanitizedDocID,
                     row.getInt32("cleaned_sentence_id"),
                     row.getInt32("constituent_chunk_idx"),

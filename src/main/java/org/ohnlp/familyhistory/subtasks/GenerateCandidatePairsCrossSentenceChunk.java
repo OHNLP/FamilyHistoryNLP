@@ -1,4 +1,4 @@
-package org.ohnlp.familyhistory.tasks;
+package org.ohnlp.familyhistory.subtasks;
 
 import org.apache.beam.sdk.coders.BigEndianIntegerCoder;
 import org.apache.beam.sdk.coders.KvCoder;
@@ -12,9 +12,15 @@ import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.*;
 import org.ohnlp.familyhistory.FHPostprocessTransformReln;
+import org.ohnlp.familyhistory.tasks.ExtractEligibleEntities;
 
 import java.util.regex.Pattern;
 
+/**
+ * For sentence clauses containing a referential pronoun (e.g., he, she, none of them, his, her),
+ * backtracks sentence/chunk ID by one (i.e., to the previous subclause) and searches for a family member
+ * mention there.
+ */
 public class GenerateCandidatePairsCrossSentenceChunk extends PTransform<PCollectionTuple, PCollection<Row>> {
     public static TupleTag<Row> ANNOTATED_SENTENCES_TUPLE_TAG = new TupleTag<>(){};
     public static TupleTag<Row> CHUNKS_BY_SENTENCE_ID_TUPLE_TAG = new TupleTag<>(){};
@@ -68,7 +74,7 @@ public class GenerateCandidatePairsCrossSentenceChunk extends PTransform<PCollec
                                         }
                                     }
                                 })
-                        ).setCoder(RowCoder.of(ExtractAndClassifyEntities.SCHEMA))).using("document_id", "sentence_id", "chunk_id")
+                        ).setCoder(RowCoder.of(ExtractEligibleEntities.ENTITY_SCHEMA))).using("document_id", "sentence_id", "chunk_id")
                 ).apply(
                         "Remap sentence/chunk IDs to preceding chunk",
                         ParDo.of(new DoFn<Row, Row>() {
@@ -143,7 +149,7 @@ public class GenerateCandidatePairsCrossSentenceChunk extends PTransform<PCollec
                         ),
                         KvCoder.of(
                                 BigEndianIntegerCoder.of(),
-                                RowCoder.of(ExtractAndClassifyEntities.SCHEMA)
+                                RowCoder.of(ExtractEligibleEntities.ENTITY_SCHEMA)
                         )
                 )).apply(
                 GroupByKey.create()
@@ -165,7 +171,7 @@ public class GenerateCandidatePairsCrossSentenceChunk extends PTransform<PCollec
                         }
                     }
                 })
-        ).setCoder(RowCoder.of(ExtractAndClassifyEntities.SCHEMA));
+        ).setCoder(RowCoder.of(ExtractEligibleEntities.ENTITY_SCHEMA));
         // - Now join with joinedTgt and write out pairs
         return joinedTgt.apply("Join entities with referential pronoun relations to previous sentence chunk",
                 Join.<Row, Row>innerJoin(lastFHMentionsByChunk).using(
