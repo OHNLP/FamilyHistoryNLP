@@ -59,7 +59,7 @@ public class ExtractEligibleEntities extends PTransform<PCollectionTuple, PColle
 
     @Override
     public PCollectionTuple expand(PCollectionTuple segmentInputSentences) {
-        PCollection<Row> input = segmentInputSentences.get(SegmentInputSentences.MAIN_OUTPUT_TAG).setCoder(RowCoder.of(SegmentInputSentences.SEGMENTED_ANNOTATION_SCHEMA));
+        PCollection<Row> input = segmentInputSentences.get(SegmentInputSentences.MAIN_OUTPUT_TAG);
         // pl task1_MedTagger_result_output_1 equivalent
         PCollection<Row> entities =
                 input.apply(
@@ -109,10 +109,10 @@ public class ExtractEligibleEntities extends PTransform<PCollectionTuple, PColle
                             });
                         }
                     }
-                }).withOutputTags(CLINICAL_ENTITY_TAG, TupleTagList.of(FAMILY_MEMBER_TAG)));
-        return PCollectionTuple.of(CLINICAL_ENTITY_TAG, out.get(CLINICAL_ENTITY_TAG))
-                .and(FAMILY_MEMBER_TAG, out.get(FAMILY_MEMBER_TAG))
-                .and(ALL_ENTITIES_TAG, out.get(ALL_ENTITIES_TAG))
+                }).withOutputTags(CLINICAL_ENTITY_TAG, TupleTagList.of(FAMILY_MEMBER_TAG).and(ALL_ENTITIES_TAG)));
+        return PCollectionTuple.of(CLINICAL_ENTITY_TAG, out.get(CLINICAL_ENTITY_TAG).setRowSchema(ENTITY_SCHEMA))
+                .and(FAMILY_MEMBER_TAG, out.get(FAMILY_MEMBER_TAG).setRowSchema(ENTITY_SCHEMA))
+                .and(ALL_ENTITIES_TAG, out.get(ALL_ENTITIES_TAG).setRowSchema(ENTITY_SCHEMA))
                 .and(ANNOTATED_SENTENCES_TAG, annotatedSentences);
     }
 }

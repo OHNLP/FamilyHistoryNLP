@@ -60,8 +60,6 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
             rel = rel.replaceAll("\"", "").replaceAll("Half_", "");
             rel = rel.substring(0, 1).toUpperCase() + rel.substring(1);
             if (this.SECOND_DEGREE_RELATIVES.matcher(rel).find()) {
-                // TODO what about second degree relatives with no mention of side?
-                // TODO double check make sure functionality matches
                 String sentence = row.getString("sentence_chunk");
                 Matcher m = SECOND_DEGREE_SIDE_MATCHER.matcher(Objects.requireNonNull(sentence));
                 boolean sideFound = false;

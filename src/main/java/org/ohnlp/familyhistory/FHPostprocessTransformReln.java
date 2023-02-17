@@ -44,9 +44,9 @@ public class FHPostprocessTransformReln extends Transform {
         PCollectionTuple sentenceSegments = input.apply(new SegmentInputSentences());
         PCollectionTuple extractedEntities = sentenceSegments.apply(new ExtractEligibleEntities());
         // TODO included for completeness, migrate cross join in new implementation to no longer use this
-        PCollection<Row> entities = extractedEntities.get(ExtractEligibleEntities.ALL_ENTITIES_TAG).setCoder(RowCoder.of(ExtractEligibleEntities.ENTITY_SCHEMA));
-        PCollection<Row> family_members = extractedEntities.get(ExtractEligibleEntities.FAMILY_MEMBER_TAG).setCoder(RowCoder.of(ExtractEligibleEntities.ENTITY_SCHEMA));
-        PCollection<Row> clinical_entities = extractedEntities.get(ExtractEligibleEntities.CLINICAL_ENTITY_TAG).setCoder(RowCoder.of(ExtractEligibleEntities.ENTITY_SCHEMA));
+        PCollection<Row> entities = extractedEntities.get(ExtractEligibleEntities.ALL_ENTITIES_TAG);
+        PCollection<Row> family_members = extractedEntities.get(ExtractEligibleEntities.FAMILY_MEMBER_TAG);
+        PCollection<Row> clinical_entities = extractedEntities.get(ExtractEligibleEntities.CLINICAL_ENTITY_TAG);
         // pl task2_output_1 equivalent
         // Do a cartesian product for all family members and clinical entities in the same sentence chunk
         PCollection<Row> candidatePairsSameConstituentChunk = family_members.apply(
@@ -74,7 +74,6 @@ public class FHPostprocessTransformReln extends Transform {
         PCollectionTuple crossReferentialInput = PCollectionTuple.of(
                 GenerateCandidatePairsCrossSentenceChunk.ANNOTATED_SENTENCES_TUPLE_TAG,
                 extractedEntities.get(ExtractEligibleEntities.ANNOTATED_SENTENCES_TAG)
-                        .setCoder(RowCoder.of(ExtractEligibleEntities.ANNOTATED_SENTENCE_SCHEMA))
         ).and(
                 GenerateCandidatePairsCrossSentenceChunk.CHUNKS_BY_SENTENCE_ID_TUPLE_TAG,
                 sentenceSegments.get(SegmentInputSentences.CHUNK_COUNT_TAG)

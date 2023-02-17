@@ -56,7 +56,7 @@ public class GenerateCandidatePairsCrossSentenceChunk extends PTransform<PCollec
                                 assert r != null;
                                 String baseSentence = r.getString("annotated_sentence");
                                 // TODO this is suboptimal (he .... but his mother .... is not supported here) but that is how
-                                // TODO it is implemented in perl
+                                // TODO it is implemented in perl, look at trying to solve with dependency parsing in the future
                                 assert baseSentence != null;
                                 if (referentialPronouns.matcher(baseSentence).find() && !baseSentence.contains("_degree")) {
                                     pc.output(r);
