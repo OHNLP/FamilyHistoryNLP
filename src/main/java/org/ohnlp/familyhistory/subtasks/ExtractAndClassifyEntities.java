@@ -50,7 +50,7 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
         if (this.EXCLUDED_TEXT_MATCHES.matcher(matched_text).find()) {
             return;
         }
-        String sanitizedDocID = row.getString("note_id");
+        String sanitizedDocID = row.getString("document_id");
         if (Objects.requireNonNull(row.getString("concept_code")).toLowerCase(Locale.ROOT).contains("_degree")) {
             String[] split_concept_code = Objects.requireNonNull(row.getString("concept_code")).split("-");
             if (split_concept_code.length < 2) {

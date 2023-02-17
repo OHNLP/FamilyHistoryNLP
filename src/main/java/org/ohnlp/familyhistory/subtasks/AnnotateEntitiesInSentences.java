@@ -31,7 +31,7 @@ public class AnnotateEntitiesInSentences extends PTransform<PCollection<Row>, PC
                                 Row r = pc.element();
                                 pc.output(
                                         KV.of(
-                                                KV.of(r.getString("note_id"),
+                                                KV.of(r.getString("document_id"),
                                                         KV.of(r.getInt32("cleaned_sentence_id"),
                                                                 KV.of(r.getInt32("constituent_chunk_idx"), r.getString("sentence_chunk")
                                                                 )
