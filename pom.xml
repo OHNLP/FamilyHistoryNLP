@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.ohnlp.familyhistory</groupId>
+    <artifactId>fhnlp-postprocessing-backbone</artifactId>
+    <version>1.0.0</version>
+    <description>Backbone component for family history postprocessing</description>
+
+
+    <repositories>
+        <repository>
+            <id>backbone-maven</id>
+            <name>OHNLP Backbone Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/OHNLP/Backbone</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <backbone.version>2.0.0</backbone.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.ohnlp.backbone</groupId>
+            <artifactId>API</artifactId>
+            <version>${backbone.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.5.2</version>
+            <classifier>models</classifier>
+        </dependency>
+    </dependencies>
+
+</project>

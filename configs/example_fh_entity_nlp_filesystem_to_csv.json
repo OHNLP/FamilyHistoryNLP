@@ -1,11 +1,11 @@
 {
-  "id": "nlp_ohdsi_to_ohdsi",
-  "description": "A pipeline configuration that extracts clinical narratives from OHDSI CDM, runs a MedTagger NLP rulesets, and outputs back to OHDSI CDM.",
+  "id": "fh_entity_extraction",
+  "description": "A debugging pipeline that outputs all family history and clinical entity mentions.",
   "pipeline": [
     {
       "clazz": "org.ohnlp.backbone.io.local.FileSystemExtract",
       "config": {
-        "fileSystemPath": "/path/to/your/input/folder",
+        "fileSystemPath": "../test_in",
         "recordIDField": "note_id",
         "recordBodyField": "note_text"
       }
@@ -21,24 +21,24 @@
       }
     },
     {
+      "clazz": "org.ohnlp.familyhistory.FHPostprocessTransformEntity",
+      "config": {
+      }
+    },
+    {
       "clazz": "org.ohnlp.backbone.io.local.CSVLoad",
       "config": {
         "_desc": "Writes MedTagger output to file as a CSV",
         "_desc_ctd": "Not guaranteed to function on all platforms",
-        "fileSystemPath": "/path/to/your/output/folder",
+        "fileSystemPath": "../test_out_entity",
         "writeHeader": true,
         "fields": [
-          "note_id",
-		  "medtagger_matched_text",
-		  "medtagger_concept_code",
-		  "medtagger_matched_sentence",
-		  "medtagger_section_id",
-		  "medtagger_nlp_run_dtm",
-		  "medtagger_certainty",
-		  "medtagger_experiencer",
-		  "medtagger_status",
-		  "medtagger_offset",
-		  "medtagger_semgroups"
+          "document_id",
+          "sentence_id",
+          "chunk_id",
+          "entity_type",
+          "concept",
+          "modifier"
         ]
       }
     }
