@@ -13,7 +13,6 @@ import org.apache.beam.sdk.transforms.join.CoGroupByKey;
 import org.apache.beam.sdk.transforms.join.KeyedPCollectionTuple;
 import org.apache.beam.sdk.values.*;
 import org.ohnlp.familyhistory.subtasks.AnnotateEntitiesInSentences;
-import org.ohnlp.familyhistory.subtasks.ConstituencyParseSentences;
 import org.ohnlp.familyhistory.subtasks.ExtractAndClassifyEntities;
 import org.ohnlp.familyhistory.subtasks.IdentifyEntitiesToRemoveByContext;
 
@@ -32,12 +31,13 @@ import java.util.stream.StreamSupport;
  * <br/>
  * Output format is (document_id, sentence_id, chunk_id, entity_type, concept, modifier, entity_sequence_number)
  */
-public class ExtractEligibleEntities extends PTransform<PCollectionTuple, PCollectionTuple> {
+public class ExtractEligibleEntities extends PTransform<PCollection<Row>, PCollectionTuple> {
 
     public static Schema ENTITY_SCHEMA = Schema.of(
             Schema.Field.of("document_id", Schema.FieldType.STRING),
             Schema.Field.of("sentence_id", Schema.FieldType.INT32),
             Schema.Field.of("chunk_id", Schema.FieldType.INT32),
+            Schema.Field.of("sequenced_chunk_id_in_document", Schema.FieldType.INT32),
             Schema.Field.of("entity_type", Schema.FieldType.STRING),
             Schema.Field.of("concept", Schema.FieldType.STRING),
             Schema.Field.of("modifier", Schema.FieldType.STRING).withNullable(true),
@@ -48,6 +48,7 @@ public class ExtractEligibleEntities extends PTransform<PCollectionTuple, PColle
             Schema.Field.of("document_id", Schema.FieldType.STRING),
             Schema.Field.of("sentence_id", Schema.FieldType.INT32),
             Schema.Field.of("chunk_id", Schema.FieldType.INT32),
+            Schema.Field.of("sequenced_chunk_id_in_document", Schema.FieldType.INT32),
             Schema.Field.of("base_sentence", Schema.FieldType.STRING),
             Schema.Field.of("annotated_sentence", Schema.FieldType.STRING)
     );
@@ -58,8 +59,7 @@ public class ExtractEligibleEntities extends PTransform<PCollectionTuple, PColle
     public static TupleTag<Row> ANNOTATED_SENTENCES_TAG = new TupleTag<>() {};
 
     @Override
-    public PCollectionTuple expand(PCollectionTuple segmentInputSentences) {
-        PCollection<Row> input = segmentInputSentences.get(SegmentInputSentences.MAIN_OUTPUT_TAG);
+    public PCollectionTuple expand(PCollection<Row> input) {
         // pl task1_MedTagger_result_output_1 equivalent
         PCollection<Row> entities =
                 input.apply(
@@ -69,7 +69,7 @@ public class ExtractEligibleEntities extends PTransform<PCollectionTuple, PColle
         PCollection<Row> annotatedSentences = input.apply(
                 "Annotate Sentences with Entities", //pl task1_MedTagger_result_output_2 equivalent
                 new AnnotateEntitiesInSentences()
-        ).setCoder(RowCoder.of(AnnotateEntitiesInSentences.SCHEMA));
+        ).setCoder(RowCoder.of(ANNOTATED_SENTENCE_SCHEMA));
         PCollection<Row> entitiesToRemove = annotatedSentences.apply("Identify entities to remove by context", // pl task1_MedTagger_result_output_3 equivalent
                 ParDo.of(new IdentifyEntitiesToRemoveByContext())
         ).setCoder(RowCoder.of(IdentifyEntitiesToRemoveByContext.SCHEMA));

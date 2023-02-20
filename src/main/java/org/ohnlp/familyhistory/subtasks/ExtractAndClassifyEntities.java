@@ -60,7 +60,7 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
             rel = rel.replaceAll("\"", "").replaceAll("Half_", "");
             rel = rel.substring(0, 1).toUpperCase() + rel.substring(1);
             if (this.SECOND_DEGREE_RELATIVES.matcher(rel).find()) {
-                String sentence = row.getString("sentence_chunk");
+                String sentence = row.getString("chunk_text");
                 Matcher m = SECOND_DEGREE_SIDE_MATCHER.matcher(Objects.requireNonNull(sentence));
                 boolean sideFound = false;
                 while (m.find()) {
@@ -69,8 +69,9 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                     side = side.substring(0, 1).toUpperCase() + side.substring(1);
                     pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                             sanitizedDocID,
-                            row.getInt32("cleaned_sentence_id"),
-                            row.getInt32("constituent_chunk_idx"),
+                            row.getInt32("sentence_id"),
+                            row.getInt32("chunk_id"),
+                            row.getInt32("sequenced_chunk_id_in_document"),
                             "FamilyMember",
                             rel,
                             side,
@@ -80,8 +81,9 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                 if (!sideFound) {
                     pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                             sanitizedDocID,
-                            row.getInt32("cleaned_sentence_id"),
-                            row.getInt32("constituent_chunk_idx"),
+                            row.getInt32("sentence_id"),
+                            row.getInt32("chunk_id"),
+                            row.getInt32("sequenced_chunk_id_in_document"),
                             "FamilyMember",
                             rel,  // TODO this doesn't seem accurate? Why are we not using group 3 instead? (for mentions of both first and second degree in same sentence)
                             "NA",
@@ -91,8 +93,9 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
             } else if (this.FIRST_DEGREE_RELATIVES.matcher(rel).find()) { // We do this second in an else because grandparents include equivalent parent word
                 pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                         sanitizedDocID,
-                        row.getInt32("cleaned_sentence_id"),
-                        row.getInt32("constituent_chunk_idx"),
+                        row.getInt32("sentence_id"),
+                        row.getInt32("chunk_id"),
+                        row.getInt32("sequenced_chunk_id_in_document"),
                         "FamilyMember",
                         rel,
                         "NA",
@@ -102,8 +105,9 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
         } else {
             pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                     sanitizedDocID,
-                    row.getInt32("cleaned_sentence_id"),
-                    row.getInt32("constituent_chunk_idx"),
+                    row.getInt32("sentence_id"),
+                    row.getInt32("chunk_id"),
+                    row.getInt32("sequenced_chunk_id_in_document"),
                     "Observation",
                     matched_text,
                     row.getString("certainty"),

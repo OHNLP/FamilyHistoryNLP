@@ -7,6 +7,8 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.Row;
 import org.ohnlp.backbone.api.Transform;
 import org.ohnlp.backbone.api.exceptions.ComponentInitializationException;
+import org.ohnlp.familyhistory.subtasks.SegmentSentenceViaConstituencyParse;
+import org.ohnlp.familyhistory.tasks.CleanMedTaggerOutput;
 import org.ohnlp.familyhistory.tasks.SegmentInputSentences;
 
 public class FHPostprocessTransformSegmentation extends Transform {
@@ -17,11 +19,11 @@ public class FHPostprocessTransformSegmentation extends Transform {
 
     @Override
     public Schema calculateOutputSchema(Schema schema) {
-        return SegmentInputSentences.SEGMENTED_ANNOTATION_SCHEMA;
+        return SegmentInputSentences.SCHEMA;
     }
 
     @Override
     public PCollection<Row> expand(PCollection<Row> input) {
-        return input.apply(new SegmentInputSentences()).get(SegmentInputSentences.MAIN_OUTPUT_TAG).setCoder(RowCoder.of(SegmentInputSentences.SEGMENTED_ANNOTATION_SCHEMA));
+        return input.apply(new CleanMedTaggerOutput()).apply(new SegmentInputSentences());
     }
 }
