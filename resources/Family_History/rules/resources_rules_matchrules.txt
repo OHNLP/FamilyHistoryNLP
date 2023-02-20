@@ -42,6 +42,9 @@ RULENAME="cm_rTDR",REGEXP="\b(?i)%reTDR\b",LOCATION="NA",NORM="Third_degree_rela
  
 //Family
 //RULENAME="cm_rFamily",REGEXP="\b(?i)%reFamily\b",LOCATION="NA",NORM="Family"
+
+//Referential Pronouns
+RULENAME="cm_rReferential",REGEXP="\b(?i)(he|she|none of them|his|her)\b",LOCATION="NA",NORM="REFERENTIAL"
  		  				 
 //Exclusion
 RULENAME="Father_excl",REGEXP="\b(?i)((adoptive|foster|surrogate|step)(\s*|\-)father|father(\s*|\-)in(\s*|\-)law|father's|husband's|wife’s|patient's partner)",LOCATION="NA",NORM="REMOVE"
