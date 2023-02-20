@@ -8,6 +8,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Marks multi-member (person who has|had ...another person) and annotations associated with
+ * husbands/patients partner/wifes for removal
+ */
 public class IdentifyEntitiesToRemoveByContext extends DoFn<Row, Row> {
     public static Schema SCHEMA = Schema.of(
             Schema.Field.of("document_id", Schema.FieldType.STRING),

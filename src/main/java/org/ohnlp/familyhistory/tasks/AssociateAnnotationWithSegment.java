@@ -7,6 +7,9 @@ import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.*;
 
+/**
+ * Associates individual MedTagger associations with the correct
+ */
 public class AssociateAnnotationWithSegment extends PTransform<PCollectionRowTuple, PCollection<Row>> {
     public static final String SEGMENT_META_TAG = "SEGMENT_METADATA";
     public static final String ANNOTATIONS_TAG = "ANNOTATIONS";

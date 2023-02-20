@@ -8,6 +8,9 @@ import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.Row;
 
+/**
+ * Deduplicates sentences so that we only run constituency parse once on each sentence
+ */
 public class DeduplicateAndCleanExtractedSentences extends PTransform<PCollection<Row>, PCollection<Row>> {
     public static final Schema SCHEMA = Schema.of(
             Schema.Field.of("document_id", Schema.FieldType.STRING),

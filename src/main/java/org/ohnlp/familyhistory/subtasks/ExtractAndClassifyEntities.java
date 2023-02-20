@@ -102,6 +102,16 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                         row.getInt32("offset")
                 ).build());
             }
+        } else if (row.getString("concept_code").equalsIgnoreCase("REFERENTIAL")) {
+            pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
+                    sanitizedDocID,
+                    row.getInt32("sentence_id"),
+                    row.getInt32("chunk_id"),
+                    row.getInt32("sequenced_chunk_id_in_document"),
+                    "REFERENTIAL",
+                    matched_text,
+                    row.getString("certainty"),
+                    row.getInt32("offset")).build());
         } else {
             pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                     sanitizedDocID,

@@ -26,6 +26,7 @@ import java.util.stream.StreamSupport;
  * <ul>
  *     <li>{@link #CLINICAL_ENTITY_TAG} for a PCollection of clinical entities</li>
  *     <li>{@link #FAMILY_MEMBER_TAG} for a PCollection of family members</li>
+ *     <li>{@link #REFERENTIAL_TAG} for a PCollection of member references</li>
  *     <li>{@link #ALL_ENTITIES_TAG} for all entities</li>
  * </ul>
  * <br/>
@@ -55,6 +56,8 @@ public class ExtractEligibleEntities extends PTransform<PCollection<Row>, PColle
 
     public static TupleTag<Row> CLINICAL_ENTITY_TAG = new TupleTag<>() {};
     public static TupleTag<Row> FAMILY_MEMBER_TAG = new TupleTag<>() {};
+    public static TupleTag<Row> REFERENTIAL_TAG = new TupleTag<>() {};
+
     public static TupleTag<Row> ALL_ENTITIES_TAG = new TupleTag<>() {};
     public static TupleTag<Row> ANNOTATED_SENTENCES_TAG = new TupleTag<>() {};
 
@@ -100,8 +103,11 @@ public class ExtractEligibleEntities extends PTransform<PCollection<Row>, PColle
                         System.out.println(group.getAll(t2));
                         if (!StreamSupport.stream(group.getAll(t2).spliterator(), false).findAny().isPresent()) {
                             group.getAll(t1).forEach(r -> {
-                                if (r.getString("entity_type").equals("Observation")) {
+                                String type = r.getString("entity_type");
+                                if (type.equals("Observation")) {
                                     pc.output(CLINICAL_ENTITY_TAG, r);
+                                } else if (type.equals("REFERENTIAL")) {
+                                    pc.output(REFERENTIAL_TAG, r);
                                 } else {
                                     pc.output(FAMILY_MEMBER_TAG, r);
                                 }
@@ -109,9 +115,10 @@ public class ExtractEligibleEntities extends PTransform<PCollection<Row>, PColle
                             });
                         }
                     }
-                }).withOutputTags(CLINICAL_ENTITY_TAG, TupleTagList.of(FAMILY_MEMBER_TAG).and(ALL_ENTITIES_TAG)));
+                }).withOutputTags(CLINICAL_ENTITY_TAG, TupleTagList.of(FAMILY_MEMBER_TAG).and(REFERENTIAL_TAG).and(ALL_ENTITIES_TAG)));
         return PCollectionTuple.of(CLINICAL_ENTITY_TAG, out.get(CLINICAL_ENTITY_TAG).setRowSchema(ENTITY_SCHEMA))
                 .and(FAMILY_MEMBER_TAG, out.get(FAMILY_MEMBER_TAG).setRowSchema(ENTITY_SCHEMA))
+                .and(REFERENTIAL_TAG, out.get(REFERENTIAL_TAG).setRowSchema(ENTITY_SCHEMA))
                 .and(ALL_ENTITIES_TAG, out.get(ALL_ENTITIES_TAG).setRowSchema(ENTITY_SCHEMA))
                 .and(ANNOTATED_SENTENCES_TAG, annotatedSentences);
     }

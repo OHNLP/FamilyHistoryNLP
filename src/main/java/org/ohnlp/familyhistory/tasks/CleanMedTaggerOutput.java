@@ -11,6 +11,9 @@ import org.joda.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Cleans MedTagger output preparatory to use in FH pipeline
+ */
 public class CleanMedTaggerOutput extends PTransform<PCollection<Row>, PCollection<Row>> {
 
     public static Schema SCHEMA = Schema.of(

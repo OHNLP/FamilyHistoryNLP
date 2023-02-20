@@ -11,6 +11,9 @@ import org.ohnlp.familyhistory.subtasks.SegmentSentenceViaConstituencyParse;
 import org.ohnlp.familyhistory.tasks.CleanMedTaggerOutput;
 import org.ohnlp.familyhistory.tasks.SegmentInputSentences;
 
+/**
+ * Outputs segmented sentence chunks and associated IDs. Only sentences containing an NLP output will be displayed
+ */
 public class FHPostprocessTransformSegmentation extends Transform {
     @Override
     public void initFromConfig(JsonNode jsonNode) throws ComponentInitializationException {

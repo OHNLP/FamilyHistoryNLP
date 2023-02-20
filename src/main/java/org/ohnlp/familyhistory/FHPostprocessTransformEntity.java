@@ -14,6 +14,9 @@ import org.ohnlp.familyhistory.tasks.ExtractEligibleEntities;
 import org.ohnlp.familyhistory.tasks.SegmentInputSentences;
 
 
+/**
+ * Outputs extracted entities from MedTagger output
+ */
 public class FHPostprocessTransformEntity extends Transform {
 
     @Override
