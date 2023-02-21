@@ -30,7 +30,7 @@
       "config": {
         "_desc": "Writes MedTagger output to file as a CSV",
         "_desc_ctd": "Not guaranteed to function on all platforms",
-        "fileSystemPath": "../test_out_reln",
+        "fileSystemPath": "../refactor_test_out_reln",
         "writeHeader": true,
         "fields": [
           "document_id",
