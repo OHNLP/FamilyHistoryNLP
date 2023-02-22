@@ -1,11 +1,11 @@
 {
-  "id": "fh_segment_extraction",
-  "description": "A pipeline configuration that extracts segmented sentences and associated metadata",
+  "id": "debug_fh_entity_extraction",
+  "description": "A debugging pipeline that outputs all family history and clinical entity mentions.",
   "pipeline": [
     {
       "clazz": "org.ohnlp.backbone.io.local.FileSystemExtract",
       "config": {
-        "fileSystemPath": "../test_in",
+        "fileSystemPath": "/path/to/your/input",
         "recordIDField": "note_id",
         "recordBodyField": "note_text"
       }
@@ -21,7 +21,7 @@
       }
     },
     {
-      "clazz": "org.ohnlp.familyhistory.FHPostprocessTransformSegmentation",
+      "clazz": "org.ohnlp.familyhistory.FHPostprocessTransformEntity",
       "config": {
       }
     },
@@ -30,16 +30,15 @@
       "config": {
         "_desc": "Writes MedTagger output to file as a CSV",
         "_desc_ctd": "Not guaranteed to function on all platforms",
-        "fileSystemPath": "../refactor_test_out_sentence",
+        "fileSystemPath": "/path/to/your/output/entities",
         "writeHeader": true,
         "fields": [
           "document_id",
           "sentence_id",
           "chunk_id",
-          "sequenced_chunk_id_in_document",
-          "chunk_text",
-          "chunk_start_offset",
-          "chunk_end_offset"
+          "entity_type",
+          "concept",
+          "modifier"
         ]
       }
     }
