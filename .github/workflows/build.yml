@@ -46,6 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./FHNLP.zip
-          asset_name: FHNLP.zip
+          asset_path: ./FamilyHistoryNLP.zip
+          asset_name: FamilyHistoryNLP.zip
           asset_content_type: application/zip
