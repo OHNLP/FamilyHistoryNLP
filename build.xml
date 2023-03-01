@@ -38,7 +38,7 @@
         <copydir src="configs" dest="${dist}/configs"/>
         <copydir src="resources" dest="${dist}/resources"/>
         <copy file="target/fhnlp-postprocessing-backbone.jar" tofile="${dist}/modules/fhnlp-postprocessing-backbone.jar"/>
-        <zip basedir="${dist}" destfile="FHNLP.zip"/>
+        <zip basedir="${dist}" destfile="FamilyHistoryNLP.zip"/>
         <delete dir="${dist}"/>
     </target>
 </project>

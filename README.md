@@ -23,7 +23,7 @@
 ## III.	Installation and Update Instructions:
 1.	Download FamilyHistoryNLP.zip from the [Github Release](https://github.com/OHNLP/FamilyHistoryNLP/releases/latest) 
 2.	The zip file will contain three folders, `configs/`, `modules/` and `resources/`. Copy the contents to their respective folders in your OHNLP Tookit installation
-3.	Go to `configs/example_fh_nlp_filesystem_to_csv.json` and make a copy.  Do not modify this example json directly as changes will be overwritten on updates
+3.	Go to `configs/example_fh_reln_nlp_filesystem_to_csv.json` and make a copy.  Do not modify this example json directly as changes will be overwritten on updates. If desired, debugging pipelines populating sentence segmentation and entity extraction are also provided and should be similarly modified, under `configs/example_debug_fh_{entity|segments}_nlp_filesystem_to_csv.json`
 4.	Pick one of the following:
 	-	If files in/files out is suitable for your use case, change lines 8 and 28 to the appropriate input/output directories. 
 	-	If you wish to change input/output formats, replace lines 5-12 and 23-44 with the correct backbone input and output function respectively. Supported formats include SQL, BigQuery, HCatalog, and JSON. Please refer to OHNLP Backbone Documentation
