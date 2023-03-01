@@ -20,9 +20,9 @@ import java.util.List;
  * (up to {@link #MAX_CROSS_REFERENCE_SENTENCE_LENGTH} sentences before)
  */
 public class ResolveReferentialFMHConcepts extends PTransform<PCollectionTuple, PCollection<Row>> {
-    private static int MAX_CROSS_REFERENCE_SENTENCE_LENGTH = 2;
+    private static int MAX_CROSS_REFERENCE_SENTENCE_LENGTH = 3;
 
-    private static final Schema SCHEMA = Schema.of(
+    public static final Schema SCHEMA = Schema.of(
             Schema.Field.of("document_id", Schema.FieldType.STRING),
             Schema.Field.of("family_member", Schema.FieldType.STRING),
             Schema.Field.of("modifier", Schema.FieldType.STRING),
@@ -60,7 +60,8 @@ public class ResolveReferentialFMHConcepts extends PTransform<PCollectionTuple, 
                         for (Row r : fam) {
                             famMemberMentions.add(r);
                         }
-                        famMemberMentions.sort(Comparator.comparingInt((Row r) -> r.getInt32("sequenced_chunk_id_in_document")).thenComparingInt(r -> r.getInt32("entity_sequence_number")));
+                        // First sort by ascending chunk order, then by ascending offsets.
+                        famMemberMentions.sort(Comparator.comparingInt((Row r) -> r.getInt32("entity_sequence_number")));
                         int startSentID = 0;
                         int startChunkID = 0;
                         int endSentID = Integer.MIN_VALUE;
@@ -72,7 +73,7 @@ public class ResolveReferentialFMHConcepts extends PTransform<PCollectionTuple, 
                             int localSentenceID = r.getInt32("sentence_id");
                             int localChunkID = r.getInt32("chunk_id");
                             if (foundFirstInDoc) {
-                                if (endSentID - startSentID > MAX_CROSS_REFERENCE_SENTENCE_LENGTH) {
+                                if (localSentenceID - startSentID > MAX_CROSS_REFERENCE_SENTENCE_LENGTH) {
                                     // Check if this exceeds cross-reference length. If it does, then truncate
                                     endSentID = startSentID + MAX_CROSS_REFERENCE_SENTENCE_LENGTH + 1;
                                     endChunkID = 0;
@@ -92,6 +93,8 @@ public class ResolveReferentialFMHConcepts extends PTransform<PCollectionTuple, 
                             } else {
                                 foundFirstInDoc = true;
                             }
+                            startSentID = localSentenceID;
+                            startChunkID = localChunkID;
                             String type = r.getString("entity_type");
                             // If this annotation is a full family member mention, update with new concept and modifier
                             // Otherwise, this is referential and we just keep old concept/modifier and don't do anything further
