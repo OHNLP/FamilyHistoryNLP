@@ -27,7 +27,7 @@
 4.	Pick one of the following:
 	-	If files in/files out is suitable for your use case, change lines 8 and 28 to the appropriate input/output directories. 
 	-	If you wish to change input/output formats, replace lines 5-12 and 23-44 with the correct backbone input and output function respectively. Supported formats include SQL, BigQuery, HCatalog, and JSON. Please refer to OHNLP Backbone Documentation
-5. If you desire FHIR based output, similarly modify a copy of `configs/example_fh_reln_nlp_filesystem_to_fhir.json`
+5. If you desire FHIR based output, similarly modify a copy of `configs/example_fh_reln_nlp_filesystem_to_fhir.json`. Note that in order to have SNOMEDCT condition codes as is the standard, a separate mapping file is required due to SNOMEDCT licensing restrictions. 
 
 
 ## IV.	Execution Instructions:
