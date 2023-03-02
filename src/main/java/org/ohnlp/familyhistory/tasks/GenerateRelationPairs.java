@@ -23,7 +23,8 @@ public class GenerateRelationPairs extends PTransform<PCollectionTuple, PCollect
             Schema.Field.of("side", Schema.FieldType.STRING.withNullable(true)),
             Schema.Field.of("type", Schema.FieldType.STRING.withNullable(true)),
             Schema.Field.of("clinical_entity", Schema.FieldType.STRING.withNullable(true)),
-            Schema.Field.of("certainty", Schema.FieldType.STRING.withNullable(true))
+            Schema.Field.of("certainty", Schema.FieldType.STRING.withNullable(true)),
+            Schema.Field.of("concept_codes", Schema.FieldType.STRING.withNullable(true))
     );
 
     @Override
@@ -52,7 +53,8 @@ public class GenerateRelationPairs extends PTransform<PCollectionTuple, PCollect
                                         faminfo.getString("modifier"),
                                         "Observation",
                                         obsinfo.getString("concept"),
-                                        obsinfo.getString("modifier")
+                                        obsinfo.getString("modifier"),
+                                        obsinfo.getString("concept_codes")
                                 ).build()
                         );
                         pc.output(matchedObs, obsinfo);
@@ -112,7 +114,8 @@ public class GenerateRelationPairs extends PTransform<PCollectionTuple, PCollect
                                         faminfo.getString("modifier"),
                                         "Observation",
                                         obsinfo.getString("concept"),
-                                        obsinfo.getString("modifier")
+                                        obsinfo.getString("modifier"),
+                                        obsinfo.getString("concept_codes")
                                 ).build()
                         );
                     }

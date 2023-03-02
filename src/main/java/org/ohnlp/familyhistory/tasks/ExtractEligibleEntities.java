@@ -42,7 +42,8 @@ public class ExtractEligibleEntities extends PTransform<PCollection<Row>, PColle
             Schema.Field.of("entity_type", Schema.FieldType.STRING),
             Schema.Field.of("concept", Schema.FieldType.STRING),
             Schema.Field.of("modifier", Schema.FieldType.STRING).withNullable(true),
-            Schema.Field.of("entity_sequence_number", Schema.FieldType.INT32)
+            Schema.Field.of("entity_sequence_number", Schema.FieldType.INT32),
+            Schema.Field.of("concept_codes", Schema.FieldType.STRING).withNullable(true)
     );
 
     public static Schema ANNOTATED_SENTENCE_SCHEMA = Schema.of(

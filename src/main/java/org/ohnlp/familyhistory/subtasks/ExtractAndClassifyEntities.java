@@ -75,7 +75,8 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                             "FamilyMember",
                             rel,
                             side,
-                            row.getInt32("offset")
+                            row.getInt32("offset"),
+                            null
                     ).build());
                 }
                 if (!sideFound) {
@@ -87,7 +88,8 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                             "FamilyMember",
                             rel,  // TODO this doesn't seem accurate? Why are we not using group 3 instead? (for mentions of both first and second degree in same sentence)
                             "NA",
-                            row.getInt32("offset")
+                            row.getInt32("offset"),
+                            null
                     ).build());
                 }
             } else if (this.FIRST_DEGREE_RELATIVES.matcher(rel).find()) { // We do this second in an else because grandparents include equivalent parent word
@@ -99,7 +101,8 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                         "FamilyMember",
                         rel,
                         "NA",
-                        row.getInt32("offset")
+                        row.getInt32("offset"),
+                        null
                 ).build());
             }
         } else if (row.getString("concept_code").equalsIgnoreCase("REFERENTIAL")) {
@@ -111,7 +114,8 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                     "REFERENTIAL",
                     matched_text,
                     row.getString("certainty"),
-                    row.getInt32("offset")).build());
+                    row.getInt32("offset"),
+                    null).build());
         } else {
             pc.output(Row.withSchema(ExtractEligibleEntities.ENTITY_SCHEMA).addValues(
                     sanitizedDocID,
@@ -121,7 +125,8 @@ public class ExtractAndClassifyEntities extends DoFn<Row, Row> {
                     "Observation",
                     matched_text,
                     row.getString("certainty"),
-                    row.getInt32("offset")).build());
+                    row.getInt32("offset"),
+                    row.getString("concept_code")).build());
         }
     }
 }
