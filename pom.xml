@@ -6,7 +6,7 @@
 
     <groupId>org.ohnlp.familyhistory</groupId>
     <artifactId>fhnlp-postprocessing-backbone</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.0</version>
     <description>Backbone component for family history postprocessing</description>
 
 
@@ -54,7 +54,7 @@
 
     <properties>
         <backbone.version>2.0.0</backbone.version>
-        <stanford.corenlp.version>4.5.2</stanford.corenlp.version>
+        <opennlp.version>2.1.1</opennlp.version>
         <hapi.fhir.version>5.7.0</hapi.fhir.version>
     </properties>
 
@@ -72,15 +72,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>edu.stanford.nlp</groupId>
-            <artifactId>stanford-corenlp</artifactId>
-            <version>${stanford.corenlp.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>edu.stanford.nlp</groupId>
-            <artifactId>stanford-corenlp</artifactId>
-            <version>${stanford.corenlp.version}</version>
-            <classifier>models</classifier>
+            <groupId>org.apache.opennlp</groupId>
+            <artifactId>opennlp-tools</artifactId>
+            <version>${opennlp.version}</version>
         </dependency>
         <!-- FHIR Clinical Data Representation -->
         <dependency>
