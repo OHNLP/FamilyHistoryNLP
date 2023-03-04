@@ -6,7 +6,7 @@
 
     <groupId>org.ohnlp.familyhistory</groupId>
     <artifactId>fhnlp-postprocessing-backbone</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>Backbone component for family history postprocessing</description>
 
 
