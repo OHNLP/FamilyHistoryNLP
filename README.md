@@ -2,9 +2,9 @@
 
 ## I.	Prerequisites:
 
--	Java 9-11 (11 preferred)
-	- 	A Unix-based system (`unzip` must be installed (e.g., via `apt-get install zip unzip`)
--	An active OHNLP Toolkit Install (OHNLP Backbone + MedTagger). Installation instructions have been included for your convenience
+- Java 11
+    - A Unix-based system (`unzip` must be installed (e.g., via `apt-get install zip unzip`)
+- An active OHNLP Toolkit Install (OHNLP Backbone + MedTagger). Installation instructions have been included for your convenience
 
 ## II.	OHNLP Toolkit Installation Instructions
 
