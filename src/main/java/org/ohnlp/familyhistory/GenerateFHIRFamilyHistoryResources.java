@@ -1,26 +1,29 @@
 package org.ohnlp.familyhistory;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PDone;
 import org.apache.beam.sdk.values.Row;
-import org.ohnlp.backbone.api.Load;
-import org.ohnlp.backbone.api.exceptions.ComponentInitializationException;
+import org.ohnlp.backbone.api.annotations.ConfigurationProperty;
+import org.ohnlp.backbone.api.components.LoadFromOne;
 import org.ohnlp.familyhistory.tasks.CreateFHIRResources;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class GenerateFHIRFamilyHistoryResources extends Load {
+public class GenerateFHIRFamilyHistoryResources extends LoadFromOne {
+    @ConfigurationProperty(
+            path = "fileSystemPath",
+            desc = "The path into which to write generated FHIR resources"
+    )
     private String workingDir;
 
     @Override
-    public void initFromConfig(JsonNode config) throws ComponentInitializationException {
-        this.workingDir = config.get("fileSystemPath").asText() + File.separator + "DocumentReference";
+    public void init() {
+        this.workingDir = this.workingDir + File.separator + "DocumentReference";
         if (!new File(this.workingDir).exists()) {
             new File(this.workingDir).mkdirs();
         }

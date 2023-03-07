@@ -6,7 +6,7 @@
 
     <groupId>org.ohnlp.familyhistory</groupId>
     <artifactId>fhnlp-postprocessing-backbone</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <description>Backbone component for family history postprocessing</description>
 
 
@@ -46,7 +46,7 @@
     </build>
 
     <properties>
-        <backbone.version>2.0.0</backbone.version>
+        <backbone.version>3.0.0</backbone.version>
         <opennlp.version>2.1.1</opennlp.version>
         <hapi.fhir.version>5.7.0</hapi.fhir.version>
     </properties>
