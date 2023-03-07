@@ -12,13 +12,13 @@
 
 **NB**: These steps require an internet connection to download requisite libraries. Once download is complete (through step 6), the entire OHNLPTK folder can be copied to a separate machine if execution in an isolated environment is desired. 
 
-1.	Run `git clone https://github.com/OHNLP/OHNLPTK_SETUP.git`
-2.	Run `cd OHNLPTK_SETUP`
-2.	Run the installation script `./install_or_update_ohnlptk.sh` (note that you may need to first enable execution via `chmod +x install_or_update_ohnlptk.sh`)
-3.	Change directory into the created `OHNLPTK/` directory
-4.	`chmod +x ./run_pipeline_local.sh` and then run `./run_pipeline_local.sh`
-5.	Follow the instructions presented onscreen to change configuration settings/job parallelism to suit your local execution environment
-6.	Instead of pressing enter once configuration options are changed, ctrl+c to exit out. At this point you should have a working base OHNLP Toolkit install
+1. Run `git clone https://github.com/OHNLP/OHNLPTK_SETUP.git`
+2. Run `cd OHNLPTK_SETUP`
+3. Run the installation script `./install_or_update_ohnlptk.sh` (note that you may need to first enable execution via `chmod +x install_or_update_ohnlptk.sh`)
+4. Change directory into the created `OHNLPTK/` directory
+5. `chmod +x ./run_pipeline_local.sh` and then run `./run_pipeline_local.sh`
+6. Follow the instructions presented onscreen to change configuration settings/job parallelism to suit your local execution environment
+7. Instead of pressing enter once configuration options are changed, ctrl+c to exit out. At this point you should have a working base OHNLP Toolkit install
 
 ## III.	Installation and Update Instructions:
 1.	Download FamilyHistoryNLP.zip from the [Github Release](https://github.com/OHNLP/FamilyHistoryNLP/releases/latest) 
