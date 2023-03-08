@@ -91,6 +91,7 @@ public class SegmentSentenceViaConstituencyParse extends PTransform<PCollection<
                             int sentenceChunkCount = 0;
                             String base = r.getString("chunk_text");
                             Parse[] constituencyTree = ParserTool.parseLine(base, this.parser, 1);
+                            base = constituencyTree[0].getText(); // Because occasionally opennlp will inject spaces (e.g. around parens) TODO better way of cross-referencing and getting derived offsets
                             // Parse out longest non-root S segments
                             List<Span> longestNonRootSegments = getLongestNonRootSegments(constituencyTree[0]);
                             if (longestNonRootSegments.size() == 0) {
