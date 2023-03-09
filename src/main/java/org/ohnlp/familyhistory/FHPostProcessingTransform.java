@@ -6,6 +6,7 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PCollectionRowTuple;
 import org.apache.beam.sdk.values.PCollectionTuple;
 import org.apache.beam.sdk.values.Row;
+import org.ohnlp.backbone.api.annotations.ComponentDescription;
 import org.ohnlp.backbone.api.components.OneToManyTransform;
 import org.ohnlp.backbone.api.exceptions.ComponentInitializationException;
 import org.ohnlp.familyhistory.tasks.*;
@@ -14,7 +15,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@ComponentDescription(
+        name = "Family History Postprocessing",
+        desc = "Extracts and Creates Family History Relations",
+        requires = {"org.ohnlp.medtagger.backbone.MedTaggerBackboneTransform"}
+)
 public class FHPostProcessingTransform extends OneToManyTransform {
+
+    public Schema getRequiredColumns(String inputTag) {
+        return Schema.of(
+                Schema.Field.of("note_id", Schema.FieldType.STRING),
+                Schema.Field.of("sentid", Schema.FieldType.STRING),
+                Schema.Field.of("concept_code", Schema.FieldType.STRING),
+                Schema.Field.of("matched_sentence", Schema.FieldType.STRING),
+                Schema.Field.of("certainty", Schema.FieldType.STRING),
+                Schema.Field.of("offset", Schema.FieldType.INT32),
+                Schema.Field.of("sent_offset", Schema.FieldType.INT32),
+                Schema.Field.of("semgroups", Schema.FieldType.STRING)
+        );
+    }
+
+
     @Override
     public Map<String, Schema> calculateOutputSchema(Schema schema) {
         return Map.of(
