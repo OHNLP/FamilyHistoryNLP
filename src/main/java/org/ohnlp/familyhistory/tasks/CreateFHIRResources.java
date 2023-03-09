@@ -28,6 +28,7 @@ public class CreateFHIRResources extends PTransform<PCollection<Row>, PCollectio
         SIBLING("SIB", "sibling"),
         GRANDMOTHER("GRMTH", "grandmother"),
         GRANDFATHER("GRFTH", "grandfather"),
+        GRANDCHILD("GRNDCHILD", "grandchild"),
         GRANDDAUGHTER("GRNDDAU", "granddaughter"),
         GRANDSON("GRNDSON", "grandson"),
         GRANDPARENT("GRPRN", "grandparent"),
